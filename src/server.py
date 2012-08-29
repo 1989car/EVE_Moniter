@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding: utf-8
 '''
 Created on 2012-8-28
 
@@ -5,6 +7,7 @@ Created on 2012-8-28
 '''
 import re
 import socket
+import time  
 
 import web
 urls = (
@@ -30,6 +33,12 @@ class ServerStat:
                         0x05, 0x8B, 0x00, 0x08, 0x0A, 0xCD, 0xCC, 0xCC,
                         0xCC, 0xCC, 0xCC, 0x00, 0x40, 0x05, 0x49, 0x0F,
                         0x10, 0x05, 0x42, 0x6C, 0x6F, 0x6F, 0x64 ]])
+    
+    def time(self):
+        currentTime =  time.strftime("%Y年%m月%d日 %H:%M:%S",time.localtime())
+        print currentTime
+        return currentTime
+        
     def getNum(self, cin ):
         return sum([ ord(n) * ( 256 ** p )  for (n ,p )  in zip( cin , range(4))]) 
     
@@ -43,7 +52,7 @@ class ServerStat:
             if self.startr.search( idat ):
                 m = self.startr.search( idat )
                 '''print 'Starting:%s' % (m.groups(1)[0])'''
-                return 'Starting:%s' % (m.groups(1)[0])
+                return -99
             else:        
                 v = ord( idat[19] )
                 if v == 4:
@@ -58,12 +67,24 @@ class ServerStat:
                 '''print 'EVE Server Online:%u' % ( cnt )'''
                 return cnt
         except:
-                '''print 'Offline:'''
+                '''return "Offline"'''
                 return -1 
+                
     def GET(self):
         print self.getServer()
-        return self.getServer()
-
+        render = web.template.render("templates")
+        if self.getServer()==-1:
+            player = 0
+            stats = u"离线"
+        elif self.getServer()==-99:
+            player = 0
+            stats = u"正在启动"
+        else:
+            player = self.getServer()
+            stats = u"在线"
+            
+        return render.server(player,stats,self.time())
+        
 
 
 app_server = web.application(urls, locals())

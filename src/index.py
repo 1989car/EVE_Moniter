@@ -19,9 +19,10 @@ class re:
 class Index:
     
     def GET(self):
+        render = web.template.render("templates")
         '''serverstat = ServerStat()'''
         '''return serverstat.getServerStats'''
-        return "EVE Server Stats"
+        return render.index()
     
     
 if __name__ == "__main__":
