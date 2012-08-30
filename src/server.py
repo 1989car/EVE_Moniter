@@ -27,6 +27,7 @@ class Server:
     '''
     waittime = 1
                 
+                
     def GET(self):
         '''
         render = web.template.render("templates")
@@ -35,10 +36,11 @@ class Server:
         '''
         currenttime = int(time.time())
         if currenttime%self.waittime == 0:
-            '''web.header("Content-type","image/x-png")'''
+            
+            '''web.header("Content-type","image/x-png") '''
             return serverImage.createImage()
         else:
             web.notmodified()
-       
-     
+            
+
 app_server = web.application(urls, locals())

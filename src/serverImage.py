@@ -5,9 +5,11 @@ Created on 2012-8-30
 
 @author: Administrator
 '''
+import sae
+
 import os,time,re,socket,StringIO
 
-import Image, ImageDraw,ImageFont 
+from PIL import Image, ImageDraw,ImageFont
 
 
 startr = re.compile('Starting\ up\.\.\.\((\d+)\ sec\.\)')
@@ -68,16 +70,17 @@ def createImage():
             player = str(0)
             stats = u"starting"
     else:
-            player = str(getServer() )
+            player = str( getServer() )
             stats = u"ONLINE"
+    
     
     
     ctime = unicode( getTime(),"utf-8") 
     
     
     '''print ctime'''
-    
-    sign = unicode("暗月重工  MarsCN")
+	
+
     
     imgdraw = ImageDraw.Draw(img)
     
@@ -95,7 +98,7 @@ def createImage():
 
     imgdraw.text( (470, 40), player, font=font, fill="#FFFFFF" )
     
-    imgdraw.text( (20, 118), sign, font=signfont, fill="#FFFFFF" )
+    imgdraw.text( (20, 118), unicode("Mars CN"), font=signfont, fill="#FFFFFF" )
     
     imgdraw.text( (350, 118), ctime, font=timefont, fill="#FFFFFF" )
     

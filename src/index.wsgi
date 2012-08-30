@@ -1,6 +1,9 @@
 #!/usr/env/python 
 #!-*- encoding: utf-8 -*-  
 
+import os
+
+import sae
 import web
 
 import server
@@ -23,7 +26,7 @@ class Index:
         '''serverstat = ServerStat()'''
         '''return serverstat.getServerStats'''
         return render.index()
-    
-    
-if __name__ == "__main__":
-    app.run()
+        
+app = web.application(urls, globals()).wsgifunc()
+
+application = sae.create_wsgi_app(app)
