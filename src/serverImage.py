@@ -77,7 +77,7 @@ def createImage():
     
     '''print ctime'''
     
-    sign = unicode("暗月重工")
+    sign = unicode("暗月重工  MarsCN")
     
     imgdraw = ImageDraw.Draw(img)
     
