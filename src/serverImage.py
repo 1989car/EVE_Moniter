@@ -9,6 +9,8 @@ import sae
 
 import os,time,re,socket,StringIO
 
+import pylibmc
+
 from PIL import Image, ImageDraw,ImageFont
 
 
@@ -32,15 +34,25 @@ def getNum(cin ):
         return sum([ ord(n) * ( 256 ** p )  for (n ,p )  in zip( cin , range(4))]) 
     
 def getServer():
+
+    timeout = 5    
+    socket.setdefaulttimeout(timeout)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.connect((HOST, PORT))
+    except:
+        return -1
+    
+    try:
         s.send(dat )
-        idat =  s.recv( 4096 )       
-            
+        idat =  s.recv( 4096 )   
+                
         if startr.search( idat ):
-            '''m = startr.search( idat )           
-            print 'Starting:%s' % (m.groups(1)[0])'''
+            '''
+            m = startr.search( idat )           
+            print 'Starting:%s' % (m.groups(1)[0])
+            '''
             return -99
             
         else:        
@@ -53,17 +65,19 @@ def getServer():
                 cnt = getNum( idat[20])
             else:
                 cnt = 0
-                
-            '''print 'EVE Server Online:%u' % ( cnt )'''
             return cnt
     except:
-            '''return "Offline"'''
-            return -1 
-
+            
+        return -1 
+    
+            
 def createImage():
     img = Image.open(os.path.join("static", "server.png"))
     
     if getServer()==-1:
+            player = str(0)
+            stats = u"OFFLINE"
+    elif getServer()==-1:
             player = str(0)
             stats = u"OFFLINE"
     elif getServer()==-99:
@@ -73,14 +87,7 @@ def createImage():
             player = str( getServer() )
             stats = u"ONLINE"
     
-    
-    
     ctime = unicode( getTime(),"utf-8") 
-    
-    
-    '''print ctime'''
-	
-
     
     imgdraw = ImageDraw.Draw(img)
     
@@ -98,19 +105,23 @@ def createImage():
 
     imgdraw.text( (470, 40), player, font=font, fill="#FFFFFF" )
     
-    imgdraw.text( (20, 118), unicode("Mars CN"), font=signfont, fill="#FFFFFF" )
+    imgdraw.text( (20, 118), unicode("ANYUE MarsCN"), font=signfont, fill="#FFFFFF" )
     
     imgdraw.text( (350, 118), ctime, font=timefont, fill="#FFFFFF" )
     
-    '''
-    img.show()
-    '''
-    '''img.save(os.path.join("static","output.png"))'''
     
     buff = StringIO.StringIO()
     
     img.save(buff,"png")
-    '''buff.close()'''
-    '''img.save("stats.png")'''
-    return buff.getvalue()
+    
+    mc = pylibmc.Client()
+    
+    mc.set("output", buff.getvalue() )
+    
+    buff.close()
+    
+   
+    
+    
+    
     

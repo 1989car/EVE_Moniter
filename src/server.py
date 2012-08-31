@@ -7,6 +7,8 @@ Created on 2012-8-28
 '''
 import time
 
+import pylibmc
+
 import web
 
 import serverImage
@@ -19,28 +21,20 @@ urls = (
 
 class redirect:
     def GET(self): raise web.seeother('/')
-
-
+    
+    
 class Server:
-    '''
-    Server Stat
-    '''
-    waittime = 1
-                
-                
+
+    waittime = 60
+                   
     def GET(self):
-        '''
-        render = web.template.render("templates")
+    
+    mc = pylibmc.Client()
         
-        return render.server()
-        '''
-        currenttime = int(time.time())
-        if currenttime%self.waittime == 0:
-            
-            '''web.header("Content-type","image/x-png") '''
-            return serverImage.createImage()
-        else:
-            web.notmodified()
+    currenttime = int(time.time())
+    if currenttime%self.waittime == 0:
+        serverImage.createImage()
+    return mc.get("output")
             
 
 app_server = web.application(urls, locals())
