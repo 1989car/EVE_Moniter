@@ -30,15 +30,26 @@ def getNum(cin ):
         return sum([ ord(n) * ( 256 ** p )  for (n ,p )  in zip( cin , range(4))]) 
     
 def getServer():
+    timeout = 5    
+    socket.setdefaulttimeout(timeout)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        
         s.connect((HOST, PORT))
+    except:
+        return -1
+    
+    try:
+        print dat
         s.send(dat )
-        idat =  s.recv( 4096 )       
+        idat =  s.recv( 4096 )   
+        
+      
             
         if startr.search( idat ):
             '''m = startr.search( idat )           
             print 'Starting:%s' % (m.groups(1)[0])'''
+            print idat    
             return -99
             
         else:        
@@ -53,6 +64,7 @@ def getServer():
                 cnt = 0
                 
             '''print 'EVE Server Online:%u' % ( cnt )'''
+            print idat    
             return cnt
     except:
             '''return "Offline"'''
@@ -61,7 +73,7 @@ def getServer():
 def createImage():
     img = Image.open(os.path.join("static", "server.png"))
     
-    if getServer()==-1:
+    if getServer()==-1 or getServer() == 0:
             player = str(0)
             stats = u"OFFLINE"
     elif getServer()==-99:
@@ -74,7 +86,7 @@ def createImage():
     
     ctime = unicode( getTime(),"utf-8") 
     
-    
+   
     '''print ctime'''
     
     sign = unicode("暗月重工  MarsCN")
