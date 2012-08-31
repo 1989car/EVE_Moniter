@@ -40,7 +40,7 @@ def getServer():
         return -1
     
     try:
-        print dat
+        '''print dat'''
         s.send(dat )
         idat =  s.recv( 4096 )   
         
@@ -49,7 +49,7 @@ def getServer():
         if startr.search( idat ):
             '''m = startr.search( idat )           
             print 'Starting:%s' % (m.groups(1)[0])'''
-            print idat    
+            '''print idat'''    
             return -99
             
         else:        
@@ -64,7 +64,7 @@ def getServer():
                 cnt = 0
                 
             '''print 'EVE Server Online:%u' % ( cnt )'''
-            print idat    
+            ''''print idat'''  
             return cnt
     except:
             '''return "Offline"'''

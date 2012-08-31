@@ -51,27 +51,47 @@ a:hover {
     width: 100%; 
 }
 
+#serverimg {
+	text-align: center;
+}
 #footer {
-    height: 199px;
-    border-top: 1px solid rgb(52, 51, 52);
-    background: black;
+	width: 960px; 
+    margin: 0 auto;
+    height: 150px;
+/*     border-top: 1px solid rgb(52, 51, 52); */
+/*     background: black; */
     font-family: 'EngschriftDIND',Arial,sans-serif;
-    color: rgb(96, 96, 96);
+    color: #FFFFFF;
     line-height: 20px;
 }
 
 #footer span {
     display: block; 
-    margin: 20px 10px; 
+    margin: 5px 10px; 
 }
 
 #footer a {
-    color: #189FCC; 
+    margin:0  5px;
+	color: #FFFFFF;
+	font-weight: bold
+}
+
+#footer a:HOVER {
+	color:#189fcc
 }
 
 .wrap {
     width: 960px; 
     margin: 0 auto; 
+}
+.footer_left{
+	width:300px;
+	float:left;
+}
+.footer_right{
+	width:400px;
+	float:right;	
+	text-align: right;
 }
 
 .eve {
@@ -153,10 +173,10 @@ h1 small {
     transition: background-color .2s ease-in-out;
 }
 
-.app-list li:hover {
-    background-color: rgba(255, 255, 255, .2); 
-    color: white; 
+.app-list p{
+	text-align: center;
 }
+
 
 .app-list a:hover {
     color: white; 
