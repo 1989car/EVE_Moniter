@@ -40,32 +40,32 @@ def getServer():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     try:
-        s.connect((HOST, PORT))
+    	s.connect((HOST, PORT))
     except:
         return -1
     
     try:
-        s.send(dat )
-        idat =  s.recv( 4096 )   
+		s.send(dat )
+		idat =  s.recv( 4096 )   
                 
-        if startr.search( idat ):
-            '''
-            m = startr.search( idat )           
-            print 'Starting:%s' % (m.groups(1)[0])
-            '''
-            return -99
+		if startr.search( idat ):
+			'''
+			m = startr.search( idat )           
+			print 'Starting:%s' % (m.groups(1)[0])
+			'''
+			return -99
             
-        else:        
-            v = ord( idat[19] )
-            if v == 4:
-                cnt = getNum( idat[20:25] )
-            elif v == 5:
-                cnt = getNum(  idat[20:22])
-            elif v == 6:
-                cnt = getNum( idat[20])
-            else:
-                cnt = 0
-            return cnt
+		else:        
+			v = ord( idat[19] )
+			if v == 4:
+				cnt = getNum( idat[20:25] )
+			elif v == 5:
+				cnt = getNum(  idat[20:22])
+			elif v == 6:
+				cnt = getNum( idat[20])
+			else:
+				cnt = 0
+			return cnt
     except:
             
         return -1 
@@ -118,10 +118,12 @@ def createImage():
     
     mc.set("output", buff.getvalue() )
     
-    buff.close()
+    mc.set("last_time",int(time.time()) )    
     
+    return buff.getvalue()
+	
    
-    
+	
     
     
     

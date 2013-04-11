@@ -16,25 +16,38 @@ import serverImage
 urls = (
   "", "redirect",
   "/*","Server",
+  "/status.png","Server",
 
 )
 
+
+
 class redirect:
     def GET(self): raise web.seeother('/')
-    
-    
+	
+	
 class Server:
 
-    waittime = 60
-                   
+
     def GET(self):
-    
-    mc = pylibmc.Client()
+	
+	mc = pylibmc.Client()
         
-    currenttime = int(time.time())
-    if currenttime%self.waittime == 0:
-        serverImage.createImage()
-    return mc.get("output")
+        last_time = mc.get("last_time")
+        
+        if not last_time:
+        	return serverImage.createImage()
+		
+	current_time = int(time.time())
+        
+        print current_time,"/",last_time
+       
+	if current_time-last_time > 10:
+        	'''web.header('Cache-Control:',' no-cache, no-store, max-age=0, must-reva lidate')'''
+                
+		return	serverImage.createImage()
+        else:
+        	return mc.get("output")
             
 
 app_server = web.application(urls, locals())
